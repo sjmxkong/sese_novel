@@ -1,0 +1,49 @@
+{layout name="layout" /}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">充值查询</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                     <form action="{:url('admin/service/pay')}" method="get" style="width: 80%;float: left;">
+                         用户名：<input type="text" name="kw" value="{$query['kw']}">
+                         商户单号：<input type="text" name="orderid" value="{$query['orderid']}">
+                        <button type="submit" class="btn btn-primary">提交</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                        <tr class="active">
+                            <th>订单号</th>
+                            <th>交易订单号</th>
+			    <th>交易流水号</th>
+                            <th>充值渠道</th>
+                            <th>用户名</th>
+                            <th>充值金额</th>
+                            <th>充值书币</th>
+                            <th>赠送书币</th>
+                            <th>到账时间</th>
+                            
+                        </tr>
+                        {volist name="plist" id="ul"}
+                        <tr {if $key%2==1}class="success"{/if}>
+                            <td>{$ul->orderid}</td>
+                            <td>{$ul->trade_order}</td>
+			    <td>{$ul->trade_orderid}</td>
+                            <td>{$ptype[$ul->ch_id]}</td>
+                            <td>{$ul->uname}</td> 
+                            <td>{$ul->money}</td>  
+                            <td>{$ul->gold}</td>
+                            <td>{$ul->gift}</td>
+                            <td>{$ul->notifytime|date="Y-m-d H:i:s",###}</td>
+                        </tr>
+                        {/volist}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,130 @@
+{layout name="layout" /}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">编辑图书</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <form action="{:url('admin/books/edit',['bid'=>$book['bid']])}" class="form-horizontal ajax-form" method="post" name="rule">
+                       	 	<input type="hidden" name="gourl" value="{$gourl}">
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 control-label">图书分类</label>
+                                <div class="col-sm-4">                                    
+                                    <select name="catid" class="form-control">
+                                        {volist name="cataRow" id="ct"}
+                                        {if condition="$ct['id'] eq $book->catid"}
+                                        <option value="{$ct.id}" selected="selected">{$ct.title}</option>
+                                        {else /}
+                                        <option value="{$ct.id}">{$ct.title}</option>
+                                        {/if}
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputname" class="col-sm-3 control-label">书名</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" value="{$book->bookname}" name="bookname" id="inputname" placeholder="书名">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputkeyword" class="col-sm-3 control-label">作者</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" value="{$book->author}" name="author" id="inputkeyword" placeholder="作者">
+                                </div>
+                            </div>
+
+                             <div class="form-group">
+                                <label for="inputname" class="col-sm-3 control-label">封面</label>
+                                <div class="col-sm-4">
+                                    <img src="{$imgUrl}{$book->litpic}" style="max-width:80px; max-height:112px;" id="litpic" class="upload">
+                                    <input type="hidden" name="litpic" value="{$book->litpic}" />
+                                </div>
+                            </div>
+   
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="inputstatus"> 是否完结 </label>
+                                <div class="col-sm-5">
+                                    <input type="radio" name="status" id="inputstatus" {if condition="$book->status neq 1"}checked="checked"{/if} value="0" />连载中
+                                    <input type="radio" name="status" id="inputstatus" {if condition="$book->status eq 1"}checked="checked"{/if} value="1" />已完结
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="inputstatus"> 是否发布 </label>
+                                <div class="col-sm-5">
+                                    <input type="radio" name="ischeck" id="inputischeck" {if condition="$book->ischeck lt 1"}checked="checked"{/if} value="0" />未审核
+                                    <input type="radio" name="ischeck" id="inputischeck" {if condition="$book->ischeck eq 1"}checked="checked"{/if} value="1" />已发布
+                                    <input type="radio" name="ischeck" id="inputischeck" {if condition="$book->ischeck eq 2"}checked="checked"{/if} value="2" />已发布,不显示
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="inputiscommend"> 推荐度 </label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control " value="{$book->iscommend}" name="iscommend" id="inputiscommend" placeholder="越大越靠前">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="inputmemo" class="col-sm-3 control-label">备注</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" value="{$book->memo}" name="memo" id="inputmemo" placeholder="备注">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="inputSort"> 摘要简介 </label>
+                                <div class="col-sm-9">
+                                    <script charset="utf-8" src="/static/admin/js/kindeditor/kindeditor-all.js"></script>
+                                    <script charset="utf-8" src="/static/admin/js/kindeditor/lang/zh-CN.js"></script>
+                                    <textarea id="editor" name="description">{$book->description}</textarea>
+                                    <script>
+                                    KindEditor.ready(function(K) {
+                                        window.editor = K.create('#editor', {
+                                            themeType: 'simple',
+                                            uploadJson: '{:url('admin/upload/uploadpic')}',
+                                            width: '100%',
+                                            height: '320px',
+                                            items: [
+                                                'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                                                'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                                                'insertunorderedlist', '|', 'emoticons', 'multiimage', 'link', '|', 'fullscreen'
+                                            ]
+                                        });
+                                    });
+                                    </script>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <button type="submit" class="btn btn-primary">提交</button>
+                                </div>
+                            </div>
+
+                           
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(argument) {
+    $('form.ajax-form').formYlBook([{
+        name: "parent_id",
+        display: '上级页面',
+        rules: 'required|integer'
+    }, {
+        name: "title",
+        display: "标题",
+        rules: "required"
+    }
+    ]);
+
+});
+</script>

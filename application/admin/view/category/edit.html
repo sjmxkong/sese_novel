@@ -1,0 +1,39 @@
+{layout name="layout" /}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">分类添加</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <form action="{:url('admin/category/edit',['id'=>$CategoryRow['id']])}" class="form-horizontal ajax-form" method="post" name="category">
+                            <div class="form-group">
+                                <label for="inputTitle" class="col-sm-3 control-label">分类名称</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" value="{$CategoryRow->title}" name="title" id="inputTitle" placeholder="分类名称">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="inputSort"> 排序 </label>
+                                <div class="col-sm-2">
+                                    <input type="text" class="form-control " name="sort" value="{$CategoryRow->sort}" id="inputSort" placeholder="越小越靠前">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <button type="submit" class="btn btn-primary">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(argument) {
+    $('form.ajax-form').formYlBook([]);
+});
+</script>

@@ -1,0 +1,32 @@
+{layout name="layout" /}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">消费记录</div>
+                <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                        <tr class="active">
+                        	<th>消费类型</th>
+                            <th>消费图书</th>
+                            <th>消费内容</th>
+                            <th>消费书币</th>
+                            <th>消费时间</th>
+                        </tr>
+                        {volist name="clist" id="p"}
+                        <tr {if $key%2==1}class="success"{/if}>
+                            <td>{$ctype[$p->type]}</td>
+                            <td>{$p->bookname}</td>
+                            <td>{$p->title}</td>
+                            <td>{$p->price}</td>
+                            <td>{$p->addtime|date="Y-m-d H:i:s",###}</td>
+                        </tr>
+                        {/volist}
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+                {$pages}
+            </div>
+        </div>
+    </div>
+</div>

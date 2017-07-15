@@ -1,0 +1,88 @@
+{layout name="layout" /}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">渠道消耗管理</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                     <form action="{:url('admin/agent/cost')}" method="get" style="width: 80%;float: left;" id="booksearch">
+                        <input readonly name="tdate" id="datetimepicker"  value="{$query['tdate']}" type="text"> -
+                        <input readonly name="edate" id="datetimepicker2"  value="{$query['edate']}" type="text">
+                        <input type="text" name="site_id" value="{$query['site_id']}" placeholder="广告位ID">
+                        <select name="author">
+                            <option value="0">负责人</option>
+                            {volist name="authorArr" id="au"}
+                            <option value="{$key}" {if $query['author'] eq $key}selected="selected"{/if}>{$au}</option>
+                            {/volist}
+                        </select>
+                        <button type="submit" class="btn btn-primary">提交</button>  <a href="{:url('admin/agent/cost_add')}" class="btn btn-success">消耗录入</a>
+                        </form>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                $(document).ready(function() {
+                    $('#datetimepicker').datetimepicker({
+                        language: "zh-CN",
+                        minView: "month",//设置只显示到月份
+                        format : "yyyy-mm-dd",//日期格式
+                        autoclose:true,//选中关闭
+                        todayBtn: true//今日按钮
+                    });
+                    $('#datetimepicker2').datetimepicker({
+                        language: "zh-CN",
+                        minView: "month",//设置只显示到月份
+                        format : "yyyy-mm-dd",//日期格式
+                        autoclose:true,//选中关闭
+                        todayBtn: true//今日按钮
+                    });
+                })
+                </script>
+                <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                        <tr class="active">
+                            <th>广告位ID</th>
+                            <th>广告位名称</th>
+                            <th>开始日期</th>
+                            <th>结束日期</th>
+                            <th>消耗金额</th>
+                            <th>回本金额</th>
+                            <th>回本率</th>
+                            <th>负责人</th>
+                            <th>备注</th>
+                        </tr>
+                        <tr class="info">
+                            <th colspan="4">合计</th>
+                            <th class="text-left">{$total.money}</th>
+                            <th class="text-left">{$total.paymoney}</th>
+                            <th class="text-left">{$total.paymoney*100/$total.money|round=2}%</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                       
+                        {volist name="data" id="d"}
+                        <tr {if $key%2==1}class="success"{/if}>
+                        	<td class="text-left">{$d.site_id}</td>
+                            <td class="text-left">{$d.agent_name}.{$d.site_name}</td>
+                            <td class="text-left">{$d.tdate}</td>
+                            <td class="text-left">{$d.edate}</td>
+                            <td class="text-left">{$d.money}</td>
+                            <td class="text-left">{$d.paymoney}</td> 
+                            <td class="text-left">{$d.paymoney*100/$d.money|round=2}%</td>
+                            <td class="text-left">{$authorArr[$d.author]}</td>
+                            <td class="text-left">{$d.memo}</td>
+                        </tr>
+                        {/volist}
+                    </table>
+                </div>
+            </div>
+ 
+        </div>
+    </div>
+</div>
+<script language="javascript">
+$(function(argument) {
+    $('form.ajax-form').formYlBook([]);
+});
+</script>

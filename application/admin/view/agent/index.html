@@ -1,0 +1,63 @@
+{layout name="layout" /}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">渠道列表</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                     <form action="{:url('admin/agent/index')}" method="get" style="width: 80%;float: left;">
+                            渠道名：<input type="text" name="kw" value="{$query['kw']}">
+                        <select name="author">
+                            <option value="0">负责人</option>
+                            {volist name="authorArr" id="au"}
+                            <option value="{$key}" {if $query['author'] eq $key}selected="selected"{/if}>{$au}</option>
+                            {/volist}
+                        </select>
+                        <button type="submit" class="btn btn-primary">提交</button> <a href="{:url('admin/agent/add')}" class="btn btn-success">添加</a>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                        <tr class="active">
+                            <th>渠道ID</th>
+                            <th>渠道名</th>
+                            <th>登录账号</th>
+                            <th>登录密码</th>
+                            <th>联系人</th>
+                            <th>qq</th>
+                            <th>手机</th>
+                            <th>最后登录IP</th>
+                            <th>最后登录时间</th>
+                            <th>负责人</th>
+                            <th>操作</th>
+                        </tr>
+                        {volist name="agentLists" id="agent"}
+                        <tr {if $key%2==1}class="success"{/if}>
+                            <td>{$agent->agent_id}</td>
+                            <td class="text-left">{$agent->agent_name}</td>  
+                            <td class="text-left">{$agent->user_name}</td>
+                            <td class="text-left">{$agent->user_pwd}</td>  
+                            <td class="text-left">{$agent->person}</td>
+                            <td class="text-left">{$agent->qq}</td>
+                            <td class="text-left">{$agent->mobile}</td>
+                            <td class="text-left">{$agent->lastip}</td>
+                            <td>{$agent->lastdate|date="Y-m-d H:i:s",###}</td>
+                            <td class="text-left">{$authorArr[$agent->author]}</td>
+                            <td>
+                                <a class="btn btn-xs btn-default" href="{:url('admin/agent/edit',['agent_id'=>$agent['agent_id'],'gourl'=>$query['gourl']])}">编辑</a>
+                                <a class="btn btn-xs btn-default add" href="{:url('admin/agent/site_add',['agent_id'=>$agent['agent_id']])}">增加广告位</a>
+                            </td>
+                        </tr>
+                        {/volist}
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+                {$pages}
+            </div>
+        </div>
+    </div>
+</div>

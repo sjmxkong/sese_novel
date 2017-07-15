@@ -1,0 +1,86 @@
+{layout name="layout" /}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">编辑广告位</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <form action="{:url('admin/agent/site_edit',['site_id'=>$site['site_id']])}" class="form-horizontal ajax-form" method="post" name="agent">
+
+                            <div class="form-group">
+                                <label for="inputagent_name" class="col-sm-3 control-label">渠道名(ID:{$site->agent_id})</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" value="{$site->agent_name}" name="agent_name" id="inputagent_name" disabled="disabled">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputsite_name" class="col-sm-3 control-label">广告位名称</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" value="{$site->site_name}" name="site_name" id="inputsite_name" placeholder="广告位名称">
+                                </div>
+                            </div>
+
+                              <div class="form-group">
+                                <label for="inputsite_name" class="col-sm-3 control-label">合作类型</label>
+                                <div class="col-sm-4">
+                                {volist name="payType" id="pt"}
+                                     <input type="radio" name="paytype" id="inputpaytype" {if $site->paytype==$key}checked="checked"{/if} value="{$key}" />{$pt}
+                                {/volist}
+                                </div>
+                            </div>
+
+                             <div class="form-group">
+                                <label for="inputdeduct" class="col-sm-3 control-label">扣量</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" value="{$site->deduct}" name="deduct" id="inputdeduct" placeholder="扣量">
+                                </div>
+                            </div>
+
+                             <div class="form-group">
+                                <label for="inputdivide" class="col-sm-3 control-label">分成比例</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" value="{$site->divide}" name="divide" id="inputdivide" placeholder="分成比例">
+                                </div>
+                            </div>
+
+                             <div class="form-group">
+                                <label for="inputprice" class="col-sm-3 control-label">单价</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" value="{$site->price}" name="price" id="inputprice" placeholder="单价">
+                                </div>
+                            </div> 
+
+                            <div class="form-group">
+                                <label for="inputsite_name" class="col-sm-3 control-label">负责人</label>
+                                <div class="col-sm-4">
+                                    <select name="author">
+                                        <option value="0">-请选择-</option>
+                                        {volist name="authorArr" id="pt"}
+                                        <option value="{$key}"  {if $site->author==$key}selected="selected"{/if}>{$pt}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div>
+
+                            
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <button type="submit" class="btn btn-primary">提交</button>
+                                </div>
+                            </div>
+
+                           
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(argument) {
+    $('form.ajax-form').formYlBook([]);
+});
+</script>

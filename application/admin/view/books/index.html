@@ -1,0 +1,105 @@
+{layout name="layout" /}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">图书列表(<font color="#a94442">注:推荐,新书,热门 可以双击编辑，数字越大越靠前。 单击表头项目可排序</font>)</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                     <form action="{:url('admin/books/index')}" method="get" style="width: 80%;float: left;" id="booksearch">
+                     		<input type="text" name="bid" value="{$query['bid']}" placeholder="图书ID">
+                            <input type="text" name="kw" value="{$query['kw']}" placeholder="书名关键字">
+                            <select name="catid">
+                            	<option value="0">全部</option>
+                                {volist name="cataRow" id="ct"}
+                                <option value="{$key}" {if condition="$key eq $query['catid']"}selected="selected"{/if}>{$ct}</option>
+                                {/volist}
+                            </select>
+                            <select name="order" id="order">
+                                <option value="5" {if $query['order'] eq 5}selected="selected"{/if}>推荐排行</option>
+                                <option value="6" {if $query['order'] eq 6}selected="selected"{/if}>新书排行</option>
+                                <option value="7" {if $query['order'] eq 7}selected="selected"{/if}>热门排行</option>
+                                <option value="1" {if $query['order'] eq 1}selected="selected"{/if}>图书ID降序</option>
+                                <option value="2" {if $query['order'] eq 2}selected="selected"{/if}>总字数降序</option>
+                                <option value="3" {if $query['order'] eq 3}selected="selected"{/if}>未发布排前</option>
+                                <option value="4" {if $query['order'] eq 4}selected="selected"{/if}>连载中排前</option>
+                                <option value="8" {if $query['order'] eq 8}selected="selected"{/if}>更新时间降序</option>                            
+                            </select>
+                        <button type="submit" class="btn btn-primary">提交</button> <a href="{:url('admin/books/add')}" class="btn btn-success">添加</a>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                        <tr class="active">
+                            <th><span {if $query['order'] eq 1}class="glyphicon glyphicon-arrow-down"{else} onclick="topChange(1);"{/if}>书ID</span></th>
+                            <th>书名</th>
+                            <th>作者</th>
+                            <th>分类</th>
+                            <th>备注</th>
+                            <th><span {if $query['order'] eq 5}class="glyphicon glyphicon-arrow-down"{else} onclick="topChange(5);"{/if}>推荐</span></th>
+                            <th><span {if $query['order'] eq 6}class="glyphicon glyphicon-arrow-down"{else} onclick="topChange(6);"{/if}>新书</span></th>
+                            <th><span {if $query['order'] eq 7}class="glyphicon glyphicon-arrow-down"{else} onclick="topChange(7);"{/if}>热门</span></th>
+                            <th><span {if $query['order'] eq 2}class="glyphicon glyphicon-arrow-down"{else} onclick="topChange(2);"{/if}>字数</span></th>
+                            <th>总价格</th>
+                            <th><span {if $query['order'] eq 3}class="glyphicon glyphicon-arrow-down"{else} onclick="topChange(3);"{/if}>发布状态</span></th>
+                            <th><span {if $query['order'] eq 4}class="glyphicon glyphicon-arrow-down"{else} onclick="topChange(4);"{/if}>是否完结</span></th>
+                            <th><span {if $query['order'] eq 8}class="glyphicon glyphicon-arrow-down"{else} onclick="topChange(8);"{/if}>更新时间</span></th>
+                            <th>操作</th>
+                        </tr>
+                        {volist name="bookLists" id="book"}
+                        <tr {if $key%2==1}class="success"{/if}>
+                            <td>{$book->bid}</td>
+                            <td class="text-left">{$book->bookname}</td>  
+                            <td class="text-left">{$book->author}</td>
+                            <td class="text-left">{$cataRow[$book->catid]}</td>  
+                            <td>{$book->memo}</td>
+                            <td class="dbclick" utype="iscommend" bid="{$book.bid}">{$book->iscommend}</td>
+                            <td class="dbclick" utype="isnew" bid="{$book.bid}">{$book->isnew}</td>
+                            <td class="dbclick" utype="ishot" bid="{$book.bid}">{$book->ishot}</td>
+                            <td>{$book->charnum/10000|round=0}w</td>
+                            <td>￥{$book->price/100|round=2}</td>
+                            <td>{if $book->ischeck eq 1}<span class="label label-success">已发布</span>{else}<span class="label label-info">未审核</span>{/if}</td>
+                            <td>{if $book->status eq 1}<span class="label label-info">已完结</span>{else}<span class="label label-success">连载中</span>{/if}</td>
+                            <td>{$book->update_time|date="Y-m-d H:i:s",###}</td>
+                            <td>
+                                <a class="btn btn-xs btn-default" href="{:url('admin/books/edit',['bid'=>$book['bid'],'gourl'=>$query['gourl']])}">编辑</a>
+                                <a class="btn btn-xs btn-default" href="/admin/aricle/index.html?bid={$book['bid']}">查看</a>
+                            </td>
+                        </tr>
+                        {/volist}
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+                {$pages}
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function() {
+    $(".dbclick").dblclick(function(){
+        var inval = $(this).html(); 
+        var bid = $(this).attr("bid");
+        var utype = $(this).attr("utype");
+        $(this).html("<input size='3' type='text' id='edit"+utype+bid+"' value='"+inval+"'>");
+        $("#edit"+utype+bid).focus().blur(function() {
+            var editval = $(this).val();
+            if(!editval || editval==inval || editval<=0){
+                $(this).parent().html(inval);
+                return;
+            } else {
+                $(this).parent().html(editval);
+                $.post("{:url('admin/books/editcommend')}",{bid:bid,utype:utype,iscommend:editval},function(data) {
+                })
+            }
+        })
+    })
+})
+function  topChange($id){
+    $("#order ").val($id);
+    $("#booksearch").submit();
+}
+</script>

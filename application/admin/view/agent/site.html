@@ -1,0 +1,68 @@
+{layout name="layout" /}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">渠道列表</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                     <form action="{:url('admin/agent/site')}" method="get" style="width: 80%;float: left;">
+                      	<select name="agent_id">
+                            <option value="0">全部</option>
+                            {volist name="agentList" id="agent"}
+                            <option value="{$agent.agent_id}" {if $query['agent_id'] eq $agent.agent_id}selected="selected"{/if}>({$agent.agent_id}){$agent.agent_name}</option>
+                            {/volist}
+                        </select>
+                         广告位名：<input type="text" name="kw" value="{$query['kw']}">
+                          <select name="author">
+                            <option value="0">负责人</option>
+                            {volist name="authorArr" id="au"}
+                            <option value="{$key}" {if $query['author'] eq $key}selected="selected"{/if}>{$au}</option>
+                            {/volist}
+                        </select>
+                        <button type="submit" class="btn btn-primary">提交</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                        <tr class="active">
+                            <th>广告位ID</th>
+                            <th>广告位名</th>
+                            <th>渠道ID</th>
+                            <th>渠道名</th>
+                            <th>合作类型</th>
+                            <th>扣量</th>
+                            <th>分成</th>
+                            <th>单价</th>
+                            <th>推广链接</th>
+                            <th>负责人</th>
+                            <th>操作</th>
+                        </tr>
+                        {volist name="siteLists" id="site"}
+                        <tr {if $key%2==1}class="success"{/if}>
+                            <td>{$site->site_id}</td>
+                            <td class="text-left">{$site->site_name}</td>
+                            <td>{$site->agent_id}</td>
+                            <td class="text-left">{$site->agent_name}</td> 
+                            <td>{$payType[$site->paytype]}</td>
+                            <td>{$site->deduct}</td>  
+                            <td>{$site->divide}</td>
+                            <td>{$site->price}</td>
+                             <td class="text-left"><input type="text" size="40" value="{$webUrl}?{php}echo base64_encode($site->agent_id.'_'.$site->site_id);{/php}"></td>
+                             <td>{$authorArr[$site->author]}</td>
+                            <td>
+                                <a class="btn btn-xs btn-default" href="{:url('admin/agent/site_edit',['site_id'=>$site['site_id'],'gourl'=>$query['gourl']])}">编辑</a>
+                            </td>
+                        </tr>
+                        {/volist}
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+                {$pages}
+            </div>
+        </div>
+    </div>
+</div>

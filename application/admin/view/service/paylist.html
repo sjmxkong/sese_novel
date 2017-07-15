@@ -1,0 +1,36 @@
+{layout name="layout" /}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">充值记录</div>
+                <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                        <tr class="active">
+                        	<th>用户名</th>
+                            <th>订单ID</th>
+                            <th>充值渠道</th>
+                            <th>充值金额</th>
+                            <th>充值书币</th>
+                            <th>赠送书币</th>
+                            <th>充值时间</th>
+                        </tr>
+                        {volist name="plist" id="p"}
+                        <tr {if $key%2==1}class="success"{/if}>
+                            <td>{$p->uname}</td>
+                            <td>{$p->orderid}</td> 
+                            <td>{$ptype[$p->ch_id]}</td>
+                            <td>{$p->money}</td>
+                            <td>{$p->gold}</td>
+                            <td>{$p->gift}</td>
+                            <td>{$p->addtime|date="Y-m-d H:i:s",###}</td>
+                        </tr>
+                        {/volist}
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+                {$pages}
+            </div>
+        </div>
+    </div>
+</div>

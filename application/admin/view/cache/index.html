@@ -1,0 +1,68 @@
+{layout name="layout" /}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">选择书本和选择缓存更新类型</div>
+            <div class="panel-body">
+            	 <form action="{:url('admin/cache/index')}" class="form-horizontal ajax-form" method="post" name="cache">
+                <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                        <tr class="active">
+                            <th><input class="check-all" type="checkbox" value="">全选  > <a href="javascript:showbl(1);">已发布</a> <a href="javascript:showbl(2);">未发布</a></th> 
+                        </tr>
+                        <tr><td>
+                        <table id="blist1" class="table  table-bordered table-hover">
+                            <tr>
+                        	{volist name="booklist1" id="book"}
+                            <td class="text-left"><input class="check" name="bids[]" type="checkbox" value="{$book->bid}">({$book->bid}){$book->bookname}</td>
+                            {if $key%5==4}</tr><tr>{/if}
+                            {/volist}
+                            </tr>
+                        </table>
+                        </td></tr>
+                        <tr><td>
+                        <table id="blist2" style="display: none;" class="table  table-bordered table-hover">
+                        <tr>
+                            {volist name="booklist2" id="book"}
+                            <td class="text-left"><input class="check" name="bids[]" type="checkbox" value="{$book->bid}">({$book->bid}){$book->bookname}</td>
+                            {if $key%5==4}</tr><tr>{/if}
+                            {/volist}
+                        </tr>
+                        </table>
+                        </td></tr>
+                        <tr>
+                        	<td class="active">
+                            	<label><input type="radio" name="ctype" value="4">更新首页内容</label>
+                            	<label><input type="radio" name="ctype" value="1">仅更新图书</label>
+                                <label><input type="radio" name="ctype" value="2">仅更新章节</label>
+                                <label><input type="radio" name="ctype" value="3">更新图书和章节</label>
+                            </td>
+                        </tr>
+                        <tr>
+                        	<td colspan="5"> <button type="submit" class="btn btn-primary">提交</button></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+             </form>
+            <div class="panel-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(argument) {
+    $('form.ajax-form').formYlBook([]);
+});
+function showbl(type){
+    if(type==1){
+        $('#blist1').show();
+        $('#blist2').hide();
+    } else {
+        $('#blist1').hide();
+        $('#blist2').show();
+    }
+}
+</script>

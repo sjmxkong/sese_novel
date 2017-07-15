@@ -1,0 +1,62 @@
+{layout name="layout" /}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">按天章节阅读数</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                     <form action="{:url('admin/total/bookchap')}" method="get" style="width: 80%;float: left;" id="booksearch">
+                      	<select name="bid">
+                            <option value="0">-请选择-</option>
+                            {volist name="bookList" id="book"}
+                            <option value="{$book.bid}" {if $query['bid'] eq $book.bid}selected="selected"{/if}>{$book.bid}:{$book.bookname}</option>
+                            {/volist}
+                        </select>
+                        <input readonly name="tdate" id="datetimepicker"  value="{$query['tdate']}" type="text"> -
+                        <input readonly name="edate" id="datetimepicker2"  value="{$query['edate']}" type="text">
+                        <button type="submit" class="btn btn-primary">提交</button> 
+                        </form>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                $(document).ready(function() {
+                    $('#datetimepicker').datetimepicker({
+                        language: "zh-CN",
+                        minView: "month",//设置只显示到月份
+                        format : "yyyy-mm-dd",//日期格式
+                        autoclose:true,//选中关闭
+                        todayBtn: true//今日按钮
+                    });
+                    $('#datetimepicker2').datetimepicker({
+                        language: "zh-CN",
+                        minView: "month",//设置只显示到月份
+                        format : "yyyy-mm-dd",//日期格式
+                        autoclose:true,//选中关闭
+                        todayBtn: true//今日按钮
+                    });
+                })
+                </script>
+                <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                        <tr class="active">
+                            <th>章节号</th>
+                            <th>阅读次数</th>
+                            <th>占比</th>
+                        </tr>
+                       
+                        {volist name="data" id="d"}
+                        <tr {if $key%2==1}class="success"{/if}>
+                            <td class="text-left">{$d.sortid}</td>
+                            <td class="text-left">{$d.num}</td> 
+                            <td class="text-left">{$d.num*100/$total|round=2}%</td>
+                        </tr>
+                        {/volist}
+                    </table>
+                </div>
+            </div>
+ 
+        </div>
+    </div>
+</div>

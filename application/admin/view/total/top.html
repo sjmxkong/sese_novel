@@ -1,0 +1,63 @@
+{layout name="layout" /}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">充值排行</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                     <form action="{:url('admin/total/top')}" method="get" style="width: 80%;float: left;" id="booksearch">
+                            <input readonly="" name="tdate" id="datetimepicker"  value="{$query['tdate']}" type="text"> -
+                            <input readonly="" name="edate" id="datetimepicker2"  value="{$query['edate']}" type="text">
+                            <input type="text" name="site_id" value="{$query['site_id']}" placeholder="广告位ID">
+                        <button type="submit" class="btn btn-primary">提交</button> 
+                        </form>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                $(document).ready(function() {
+                    $('#datetimepicker').datetimepicker({
+                        language: "zh-CN",
+                        minView: "month",//设置只显示到月份
+                        format : "yyyy-mm-dd",//日期格式
+                        autoclose:true,//选中关闭
+                        todayBtn: true//今日按钮
+                    });
+                    $('#datetimepicker2').datetimepicker({
+                        language: "zh-CN",
+                        minView: "month",//设置只显示到月份
+                        format : "yyyy-mm-dd",//日期格式
+                        autoclose:true,//选中关闭
+                        todayBtn: true//今日按钮
+                    });
+                })
+                </script>
+                <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                        <tr class="active">
+                            <th>广告位ID</th>
+                            <th width="20%">广告位名称</th>
+                            <th>用户ID</th>
+                            <th>充值金额</th>
+                            <th>充值次数</th>
+                            <th>ARPU</th>
+                        </tr>
+                       
+                        {volist name="data" id="d"}
+                        <tr {if $key%2==1}class="success"{/if}>
+                            <td>{$d.site_id}</td>  
+                            <td class="text-left">{$d.agent_name}·{$d.site_name}</td>
+                            <td>{$d.mid}</td> 
+                            <td class="text-left">￥{$d.mo}</td> 
+                            <td class="text-left">{$d.num}</td> 
+                            <td class="text-left">￥{$d.mo/$d.num|round=2}</td>  
+                        </tr>
+                        {/volist}
+                    </table>
+                </div>
+            </div>
+ 
+        </div>
+    </div>
+</div>

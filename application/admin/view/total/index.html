@@ -1,0 +1,82 @@
+{layout name="layout" /}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">数据汇总按天统计</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                     <form action="{:url('admin/total/index')}" method="get" style="width: 80%;float: left;" id="booksearch">
+                            <input readonly name="tdate" id="datetimepicker"  value="{$query['tdate']}" type="text">
+                            <input type="text" name="agent_id" value="{$query['agent_id']}" placeholder="渠道ID">
+                            <input type="text" name="site_id" value="{$query['site_id']}" placeholder="广告位ID">
+                            <select name="author">
+                            <option value="0">负责人</option>
+                            {volist name="authorArr" id="au"}
+                            <option value="{$key}" {if $query['author'] eq $key}selected="selected"{/if}>{$au}</option>
+                            {/volist}
+                        </select>
+                        <button type="submit" class="btn btn-primary">提交</button> 
+                        </form>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                $(document).ready(function() {
+                    $('#datetimepicker').datetimepicker({
+                        language: "zh-CN",
+                        minView: "month",//设置只显示到月份
+                        format : "yyyy-mm-dd",//日期格式
+                        autoclose:true,//选中关闭
+                        todayBtn: true//今日按钮
+                    });
+                })
+                </script>
+                <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                        <tr class="active">
+                            <th>广告位ID</th>
+                            <th width="20%">广告位名称</th>
+                            <th>负责人</th>
+                            <th>注册用户</th>
+                            <th>新用户充值人数</th>
+                            <th>新用户充值金额</th>
+                            <th>充值率</th>
+                            <th>ARPU</th>
+                            <th>当天总充值用户</th>
+                            <th>当天总充值金额</th>
+                            <th>ARPU</th>
+                        </tr>
+                        <tr class="info">
+                            <th colspan="3">合计</th>
+                            <th class="text-left">{$total.regnum}</th>
+                            <th class="text-left">{$total.newnum}</th>
+                            <th class="text-left">￥{$total.newmoney}</th>
+                            <th class="text-left">{if $total.regnum}{$total.newnum*100/$total.regnum|round=2}{else}100{/if}%</th>
+                            <th class="text-left">￥{$total.newmoney/$total.newnum|round=2}</th>
+                            <th class="text-left">{$total.paynum}</th>
+                            <th class="text-left">￥{$total.paymoney}</th>
+                            <th class="text-left">￥{$total.paymoney/$total.paynum|round=2}</th>
+                        </tr>
+                        {volist name="data" id="d"}
+                        <tr {if $key%2==1}class="success"{/if}>
+                            <td>{$d.site_id}</td>  
+                            <td class="text-left">{$d.agent_name}·{$d.site_name}</td>
+                            <td class="text-left">{$authorArr[$d.author]}</td>
+                            <td class="text-left">{$d.regnum}</td> 
+                            <td class="text-left">{$d.newnum}</td>  
+                            <td class="text-left">￥{$d.newmoney}</td>
+                            <td class="text-left">{if $d.regnum}{$d.newnum*100/$d.regnum|round=2}{else}100{/if}%</td>
+                            <td class="text-left">￥{$d.newmoney/$d.newnum|round=2}</td>  
+                            <td class="text-left">{$d.paynum}</td>
+                            <td class="text-left">￥{$d.paymoney}</td>
+                            <td class="text-left">￥{$d.paymoney/$d.paynum|round=2}</td>
+                        </tr>
+                        {/volist}
+                    </table>
+                </div>
+            </div>
+ 
+        </div>
+    </div>
+</div>

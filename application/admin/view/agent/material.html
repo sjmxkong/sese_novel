@@ -1,0 +1,83 @@
+{layout name="layout" /}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">素材列表</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                     <form action="{:url('admin/agent/material')}" method="get" style="width: 80%;float: left;">
+                     	<select name="type">
+                            <option value="0">-请选择-</option>
+                            {volist name="mrtype" id="pt"}
+                            <option value="{$key}" {if $query['type'] eq $key}selected="selected"{/if}>{$pt}</option>
+                            {/volist}
+                        </select>
+                        <select name="bid">
+                            <option value="0">-请选择-</option>
+                            {volist name="bookList" id="book"}
+                            <option value="{$book.bid}" {if $query['bid'] eq $book.bid}selected="selected"{/if}>{$book.bid}:{$book.bookname}</option>
+                            {/volist}
+                        </select>
+                            标题名：<input type="text" name="kw" value="{$query['kw']}">
+                        <button type="submit" class="btn btn-primary">提交</button> <a href="{:url('admin/agent/material_add')}" class="btn btn-success">添加</a>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                        <tr class="active">
+                            <th>素材ID</th>
+                            <th>排序</th>
+                            <th>素材类型</th>
+                            <th width="20%">素材图片</th>
+                            <th>推广标题</th>
+                            <th>推广链接</th>
+                            <th>增加时间</th>
+                            <th>状态</th>
+                        </tr>
+                        {volist name="material" id="mate"}
+                        <tr {if $key%2==1}class="success"{/if}>
+                            <td>{$mate->id}</td>
+                            <td class="dbclick" id="{$mate.id}">{$mate->rank}</td> 
+                            <td>{$mrtype[$mate->type]}</td>
+                            <td class="text-left"><a href="{$imgUrl}{$mate->pic}">{$imgUrl}{$mate->pic}</a></td>  
+                            <td class="text-left">{$mate->title}</td>  
+                            <td class="text-left"><a href="{$mate->url}">{$mate->url}</a></td>
+                            <td>{$mate->addtime|date="Y-m-d H:i:s",###}</td>
+                            <td class="text-left">{if $mate->state==1}正常{else}下架{/if}</td>
+                            <td>
+                                <a class="btn btn-xs btn-default" href="{:url('admin/agent/material_edit',['id'=>$mate['id'],'gourl'=>$query['gourl']])}">编辑</a>
+                            </td>
+                        </tr>
+                        {/volist}
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+                {$pages}
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function() {
+    $(".dbclick").dblclick(function(){
+        var inval = $(this).html(); 
+        var id = $(this).attr("id");
+        $(this).html("<input size='3' type='text' id='editmate"+id+"' value='"+inval+"'>");
+        $("#editmate"+id).focus().blur(function() {
+            var editval = $(this).val();
+            if(!editval || editval==inval || editval<=0){
+                $(this).parent().html(inval);
+                return;
+            } else {
+                $(this).parent().html(editval);
+                $.post("{:url('admin/agent/editmaterank')}",{id:id,val:editval},function(data) {
+                })
+            }
+        })
+    })
+})
+</script>

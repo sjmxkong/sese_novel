@@ -1,0 +1,48 @@
+{layout name="layout" /}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">用户查询</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                     <form action="{:url('admin/service/user')}" method="get" style="width: 80%;float: left;">
+                         用户名：<input type="text" name="kw" value="{$query['kw']}">
+                         绑定手机号：<input type="text" name="mobile" value="{$query['mobile']}">
+                        <button type="submit" class="btn btn-primary">提交</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                        <tr class="active">
+                            <th>用户ID</th>
+                            <th>用户名</th>
+                            <th>注册类型</th>
+                            <th>剩余书币</th>
+                            <th>充值金额</th>
+                            <th>绑定手机</th>
+                            <th>注册时间</th>
+                            <th>渠道ID</th>
+                            <th>广告位ID</th>
+                        </tr>
+                        {volist name="ulist" id="ul"}
+                        <tr {if $key%2==1}class="success"{/if}>
+                            <td>{$ul->mid}</td>
+                            <td class="text-left">{$ul->uname}</td>
+                            <td>{$rtype[$ul->mtype]}</td>
+                            <td><a class="btn btn-xs btn-default" href="{:url('admin/service/costlist',['mid'=>$ul['mid']])}" target="_blank">{$ul->gold}</a></td> 
+                            <td><a class="btn btn-xs btn-default" href="{:url('admin/service/paylist',['mid'=>$ul['mid']])}" target="_blank">{$ul->money}</a></td>  
+                            <td>{$ul->mobile}</td>
+                            <td>{$ul->regtime|date="Y-m-d H:i:s",###}</td>
+                            <td>{$ul->agent_id}</td>
+                            <td>{$ul->site_id}</td>
+                        </tr>
+                        {/volist}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
